@@ -165,7 +165,7 @@ public class ToolBar implements ActionListener {
         } else if ( event == btnUndo) {
             actionUndo(e);
         } else if (event == btnNew) {
-            MyPanel.setnewall();
+            new MyPanel().setnewall();
         }
     }
 
