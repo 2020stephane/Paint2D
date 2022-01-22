@@ -77,7 +77,7 @@ public class FileMenu implements ActionListener {
         if (event == mOpen) {
             actionfileopen();
         } else if (event == mNew) {
-            MyPanel.setnewall();
+            new MyPanel().setnewall();
         }
     }
     private void actionfileopen() {
@@ -88,7 +88,6 @@ public class FileMenu implements ActionListener {
         int returnVal = chooser.showOpenDialog(null);
 
         if (returnVal == JFileChooser.CANCEL_OPTION) {
-            return;
         } else if (returnVal == JFileChooser.APPROVE_OPTION) {
             File imageInput = chooser.getSelectedFile();
             try {

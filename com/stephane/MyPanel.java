@@ -23,13 +23,11 @@ import static com.stephane.tools.Shape.*;
 public class  MyPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 
-    private static Shape currentShape = PENCIL;
-    private static int strokeWidth = 1;
-    private static Color mycolor = Color.black;
-    private Point posMouse = null;
+    private static Shape currentShape = null;
+    private static int strokeWidth = 0;
+    private static Color mycolor = null;
     private static Point startPoint = null;
     private static Point endPoint = null;
-    private boolean onscreen = false;
     private static BufferedImage bufferImage = null;
     private static BufferedImage bufferImage2 = null;
 
@@ -55,10 +53,11 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         strokeWidth = w;
     }
     public static void setBufferImage(BufferedImage buf) { bufferImage2 = buf; }
-    public static void setnewall() {
+    public void setnewall() {
         bufferImage = null;
         startPoint = null;
         endPoint = null;
+        repaint();
     }
 
     @Override
@@ -122,7 +121,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        posMouse = e.getPoint();
+        Point posMouse = e.getPoint();
     }
     @Override
     public void mouseEntered(MouseEvent e) {

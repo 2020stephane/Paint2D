@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="Paint2D:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Paint2D_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Paint2D.jar">
+        <element id="module-output" name="Paint2D" />
+      </element>
+    </root>
+  </artifact>
+</component>
