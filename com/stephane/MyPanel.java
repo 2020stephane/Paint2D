@@ -9,6 +9,7 @@
 
 package com.stephane;
 
+import com.stephane.menu.StatusBar;
 import com.stephane.tools.Shape;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     private static Color mycolor = null;
     private static Point startPoint = null;
     private static Point endPoint = null;
+    private static Point posMouse = null;
     private static BufferedImage bufferImage = null;
     private static BufferedImage bufferImage2 = null;
 
@@ -35,7 +37,6 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         setLayout(null);
         setDoubleBuffered(true);
         clearBufferImage();
-        bufferImage = (BufferedImage) createImage(getWidth(), getHeight());
         strokeWidth = 2;
         mycolor = Color.black;
         currentShape = PENCIL;
@@ -53,11 +54,19 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         strokeWidth = w;
     }
     public static void setBufferImage(BufferedImage buf) { bufferImage2 = buf; }
-    public void setnewall() {
-        bufferImage = null;
-        startPoint = null;
-        endPoint = null;
-        repaint();
+    public static BufferedImage getBufferImage() { return bufferImage; }
+
+    public void printCoords() {
+        String posX = String.valueOf(posMouse.x);
+        String posY = String.valueOf(posMouse.y);
+        JLabel lsb = Main.getStatusBar().getLblCoord();
+        lsb.setText(posX + ",  " + posY + " px");
+    }
+    public void printSize() {
+        String width = String.valueOf(this.getWidth());
+        String height = String.valueOf(this.getHeight());
+        JLabel lds =  new StatusBar().getLblSize();
+        lds.setText(width + ",  " + height + " px");
     }
 
     @Override
@@ -80,10 +89,6 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         bufferImage = null;
         startPoint = null;
         endPoint = null;
-/*
-        paint.setFilePath("");
-        paint.setFileName("Untitled - Paint");
-        paint.setTitle(paint.getFileName());*/
         repaint();
     }
 
@@ -116,12 +121,15 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
             endPoint = e.getPoint();
             renderShape(bufferImage.createGraphics());
         } else endPoint = e.getPoint();
+
         repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        Point posMouse = e.getPoint();
+        posMouse = e.getPoint();
+        printCoords();
+        printSize();
     }
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -144,12 +152,12 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
                 BasicStroke.JOIN_ROUND));
 
-
         switch (currentShape) {
             case PENCIL:
                 g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
                 g2D.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+                printCoords();
                 break;
             case LINE:
 
@@ -190,6 +198,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
             default:
                 break;
         }
+        printCoords();
     }
     public void drawRectangle(Graphics2D g2D) {
         if (((startPoint.x - endPoint.x) < 0)

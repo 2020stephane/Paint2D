@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class StatusBar extends JToolBar {
 
-    private JLabel lblCoord;
-    private JLabel lblSize;
+    private final JLabel lblCoord;
+    private final JLabel lblSize;
 
     public StatusBar() {
         setFloatable(false);
         setRollover(true);
-        setBackground(Color.GRAY);
+        setBackground(Color.LIGHT_GRAY);
         add(new JLabel((new ImageIcon(Objects.requireNonNull(getClass().getResource(
                 "../icon/coordsPosition.png"))))));
         lblCoord = new JLabel();

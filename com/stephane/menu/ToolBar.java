@@ -10,10 +10,15 @@ package com.stephane.menu;
 import com.stephane.MyPanel;
 import com.stephane.Main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.stephane.tools.Shape.*;
@@ -24,6 +29,7 @@ public class ToolBar implements ActionListener {
     private JButton btnUndo;
     private JButton btnRedo;
     private JButton btnNew;
+    private JButton btnOpen;
     private final JDialog colorDialog;
     private final JColorChooser colorChooser;
     private JComboBox<String> cbTools;
@@ -91,7 +97,7 @@ public class ToolBar implements ActionListener {
     }
 
     private JButton openImage() {
-        JButton btnOpen = new JButton();
+        btnOpen = new JButton();
         btnOpen.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
                 "../icon/openFile.png"))));
         btnOpen.addActionListener(this);
@@ -164,8 +170,12 @@ public class ToolBar implements ActionListener {
             actionStrokeWidth(e);
         } else if ( event == btnUndo) {
             actionUndo(e);
+        } else if ( event == btnRedo) {
+            actionRedo(e);
         } else if (event == btnNew) {
-            new MyPanel().setnewall();
+            Main.getMypanel().clearBufferImage();
+        } else if ( event == btnOpen) {
+            actionOpen(e);
         }
     }
 
@@ -203,8 +213,27 @@ public class ToolBar implements ActionListener {
         MyPanel.setStrokeWidth(intsw);
 
     }
-    private void actionUndo(ActionEvent e) {
+    private void actionUndo(ActionEvent e) { }
+    private void actionRedo(ActionEvent e) { }
+    private  void actionOpen(ActionEvent e) {
 
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "jpg, gif, png images", "jpg", "gif", "png");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(null);
+
+            if (returnVal == JFileChooser.CANCEL_OPTION) {
+            } else if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File imageInput = chooser.getSelectedFile();
+                try {
+                    BufferedImage bufferedImage = ImageIO.read(imageInput);
+                    MyPanel.setBufferImage(bufferedImage) ;
+
+
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
     }
-
 }

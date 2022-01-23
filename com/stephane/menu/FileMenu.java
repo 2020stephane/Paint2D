@@ -4,6 +4,7 @@
 
 package com.stephane.menu;
 
+import com.stephane.Main;
 import com.stephane.MyPanel;
 
 
@@ -21,6 +22,8 @@ public class FileMenu implements ActionListener {
 
     private JMenuItem mOpen;
     private JMenuItem mNew;
+    private JMenuItem mSave;
+    private JMenuItem mSaveAs;
 
     public FileMenu() {
 
@@ -51,14 +54,14 @@ public class FileMenu implements ActionListener {
     }
 
     private JMenuItem fileSave() {
-        JMenuItem mSave = new JMenuItem("Save");
+        mSave = new JMenuItem("Save");
         mSave.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
         mSave.addActionListener(this);
         return mSave;
     }
 
     private JMenuItem fileSaveAs() {
-        JMenuItem mSaveAs = new JMenuItem("Save as...");
+        mSaveAs = new JMenuItem("Save as...");
         mSaveAs.setAccelerator(KeyStroke.getKeyStroke("ctrl alt S"));
         mSaveAs.addActionListener(this);
         return mSaveAs;
@@ -77,7 +80,9 @@ public class FileMenu implements ActionListener {
         if (event == mOpen) {
             actionfileopen();
         } else if (event == mNew) {
-            new MyPanel().setnewall();
+            Main.getMypanel().clearBufferImage();
+        } else if (event == mSave | event == mSaveAs) {
+            actionfilesaveAs(e);
         }
     }
     private void actionfileopen() {
@@ -97,6 +102,38 @@ public class FileMenu implements ActionListener {
 
             } catch (IOException e1) {
                 e1.printStackTrace();
+            }
+        }
+    }
+    private void actionfilesaveAs(ActionEvent e) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        int dialog = chooser.showSaveDialog(null);
+
+        if (dialog == JFileChooser.CANCEL_OPTION) {
+            return;
+        } else if (dialog == JFileChooser.OPEN_DIALOG) {
+            File myFile = chooser.getSelectedFile();
+
+            if (myFile.exists()) {
+                dialog = JOptionPane
+                        .showConfirmDialog(null,
+                                "A file with same name already exists!\nAre you sure want to overwrite?");
+
+                if (dialog != 0) {
+                    return;
+                }
+            }
+            try {
+                String filePath = myFile.getPath();
+                BufferedImage bi = MyPanel.getBufferImage();
+                File outputfile = new File(filePath);
+                ImageIO.write(bi, "png", outputfile);
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Failed to save the file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
             }
         }
     }
