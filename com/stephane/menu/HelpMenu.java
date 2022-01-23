@@ -7,6 +7,7 @@
 package com.stephane.menu;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
@@ -49,12 +50,8 @@ public class HelpMenu implements ActionListener {
         }
     }
     public void actionabout() {
-        ImageIcon logo = new ImageIcon(Objects.requireNonNull
-                (getClass().getResource("../icon/moon.png")));
 
-         JOptionPane.showMessageDialog(
-                null,"je vais bien",
-                 "stephane brisse",JOptionPane.ERROR_MESSAGE,
-                 logo);
+        AboutDialog mydialog = new AboutDialog("About Paint 2D");
+
     }
 }
