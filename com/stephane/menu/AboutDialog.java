@@ -11,8 +11,11 @@ public class AboutDialog extends JDialog {
     public AboutDialog(String titre) {
         super((Frame) null,titre,true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setBounds(getWidth()/2,
-                getHeight()/2,350,200);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int height = dim.height;
+        int width = dim.width;
+        this.setBounds(width / 2,
+                height /2,350,200);
         ImageIcon logo = new ImageIcon(Objects.requireNonNull
                 (getClass().getResource("../icon/moon.png")));
         JPanel panel1 = new JPanel();

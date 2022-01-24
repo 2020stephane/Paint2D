@@ -11,6 +11,7 @@ package com.stephane;
 
 import com.stephane.menu.StatusBar;
 import com.stephane.tools.Shape;
+import com.stephane.tools.figures;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import static com.stephane.tools.Shape.*;
 
@@ -32,6 +34,8 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     private static Point posMouse = null;
     private static BufferedImage bufferImage = null;
     private static BufferedImage bufferImage2 = null;
+    private static ArrayList<figures>  myfigures = new ArrayList<>();
+    private static boolean askundo = false;
 
     public MyPanel() {
         setLayout(null);
@@ -55,6 +59,9 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     }
     public static void setBufferImage(BufferedImage buf) { bufferImage2 = buf; }
     public static BufferedImage getBufferImage() { return bufferImage; }
+    public static void setUndo(boolean b) {
+        askundo = b;
+    }
 
     public void printCoords() {
         String posX = String.valueOf(posMouse.x);
@@ -79,6 +86,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
             gc.setColor(Color.WHITE);
             gc.fillRect(0, 0, getWidth(), getHeight());
         }
+
         g2D.drawImage(bufferImage, null, 0, 0);
         if (startPoint != null && endPoint != null) {
             renderShape(g2D);
@@ -108,6 +116,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         endPoint = e.getPoint();
+
         renderShape(bufferImage.createGraphics());
         repaint();
         if (bufferImage2 != null) bufferImage2 = null;
@@ -119,9 +128,9 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
         if ((currentShape == PENCIL) | (currentShape == ERASER)) {
             startPoint = endPoint;
             endPoint = e.getPoint();
+            posMouse = e.getPoint();
             renderShape(bufferImage.createGraphics());
-        } else endPoint = e.getPoint();
-
+        } else  {endPoint = e.getPoint(); }
         repaint();
     }
 
@@ -151,12 +160,14 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
                 BasicStroke.JOIN_ROUND));
-
+        printCoords();
         switch (currentShape) {
             case PENCIL:
                 g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
                 g2D.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+                myfigures.add(new figures(startPoint.x, startPoint.y,
+                        endPoint.x, endPoint.y, PENCIL));
                 printCoords();
                 break;
             case LINE:
@@ -164,25 +175,35 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
                 g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_ROUND));
                 g2D.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+                myfigures.add(new figures(startPoint.x, startPoint.y,
+                        endPoint.x, endPoint.y, LINE));
+                printCoords();
                 break;
             case SQUARE:
                 g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_MITER));
-                if (startPoint.x < startPoint.y & endPoint.x < endPoint.y) {
+                g2D.setColor(Color.blue);
+                if (startPoint.x < endPoint.x & startPoint.y < endPoint.y) {
                     g2D.drawRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x,
                         endPoint.x - startPoint.x);
+                    myfigures.add(new figures(startPoint.x, startPoint.y,
+                            endPoint.x, endPoint.y, SQUARE));
+                break;
                 }
             case RECTANGLE:
                 g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_MITER));
                 g2D.drawRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x,
                         endPoint.y - startPoint.y);
+                myfigures.add(new figures(startPoint.x, startPoint.y,
+                        endPoint.x, endPoint.y, SQUARE));
                 break;
             case CIRCLE:
                 g2D.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_MITER));
                 g2D.drawOval(startPoint.x, startPoint.y, Math.abs(endPoint.x - startPoint.x),
                         Math.abs(endPoint.x - startPoint.x));
+                break;
             case OVAL:
                 g2D.drawOval(startPoint.x, startPoint.y, endPoint.x - startPoint.x,
                         endPoint.y - startPoint.y);

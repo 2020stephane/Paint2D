@@ -213,8 +213,6 @@ public class ToolBar implements ActionListener {
         MyPanel.setStrokeWidth(intsw);
 
     }
-    private void actionUndo(ActionEvent e) { }
-    private void actionRedo(ActionEvent e) { }
     private  void actionOpen(ActionEvent e) {
 
             JFileChooser chooser = new JFileChooser();
@@ -236,4 +234,9 @@ public class ToolBar implements ActionListener {
                 }
             }
     }
+    private void actionUndo(ActionEvent e) {
+        MyPanel.setUndo(true);
+    }
+    private void actionRedo(ActionEvent e) { }
+
 }
