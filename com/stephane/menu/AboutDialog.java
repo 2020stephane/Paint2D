@@ -6,16 +6,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
+import static com.stephane.Main.getFrame;
+
 public class AboutDialog extends JDialog {
 
     public AboutDialog(String titre) {
-        super((Frame) null,titre,true);
+        super(getFrame(),titre,true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int height = dim.height;
         int width = dim.width;
-        this.setBounds(width / 2,
-                height /2,350,200);
+        this.setLocation(getFrame().getWidth(),getFrame().getHeight());
+        this.setSize(350,200);
         ImageIcon logo = new ImageIcon(Objects.requireNonNull
                 (getClass().getResource("../icon/moon.png")));
         JPanel panel1 = new JPanel();

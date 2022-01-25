@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class Main {
 
-    private static JFrame frame;
+    private static JFrame frame = null;
     private static MyPanel mypanel;
     private static StatusBar mystatusbar;
 
