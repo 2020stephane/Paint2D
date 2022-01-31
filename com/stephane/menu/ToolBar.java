@@ -161,7 +161,7 @@ public class ToolBar implements ActionListener {
     private JButton fill() {
         btnfill = new JButton();
         btnfill.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
-                "../icon/fill.png"))));
+                "../icon/nofill.png"))));
         btnfill.addActionListener(this);
         return btnfill;
     }
@@ -256,7 +256,13 @@ public class ToolBar implements ActionListener {
     private void actionFill() {
         if (MyPanel.getFill()) {
            MyPanel.setFill(false);
-        } else MyPanel.setFill(true);
+            btnfill.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
+                    "../icon/nofill.png"))));
+        } else {
+            MyPanel.setFill(true);
+            btnfill.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
+                    "../icon/fill.png"))));
+        }
 
     }
 

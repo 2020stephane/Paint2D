@@ -19,7 +19,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.stephane.tools.Shape.*;
 
@@ -37,6 +40,9 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     private static ArrayList<figures>  myfigures = new ArrayList<>();
     private static boolean askundo = false;
     private static boolean askfill = false;
+
+
+
     public MyPanel() {
         setLayout(null);
         setDoubleBuffered(true);
@@ -148,7 +154,15 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     }
     @Override
     public void mouseEntered(MouseEvent e) {
-        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        /*if (askfill) {
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            Image fillcurs = tk.createImage("icon/moon.png");
+            Cursor mycursor = tk.createCustomCursor( fillcurs,
+                    new Point(0,0),"fillcursor");
+            setCursor(Cursor.mycursor);
+        } else {*/
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
     }
     @Override
     public void mouseExited(MouseEvent e) { }
@@ -218,9 +232,9 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
                 g2D.setColor(Color.WHITE);
                 g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
-                g2D.drawLine(startPoint.x - (strokeWidth / 2), startPoint.y
-                        - (strokeWidth / 2), endPoint.x + (strokeWidth / 2), endPoint.y +
-                        strokeWidth / 2);
+                g2D.drawLine(startPoint.x - (strokeWidth ), startPoint.y
+                        - (strokeWidth), endPoint.x + (strokeWidth), endPoint.y +
+                        strokeWidth);
                 break;
             default:
                 break;
