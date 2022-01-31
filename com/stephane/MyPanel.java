@@ -36,7 +36,7 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     private static BufferedImage bufferImage2 = null;
     private static ArrayList<figures>  myfigures = new ArrayList<>();
     private static boolean askundo = false;
-
+    private static boolean askfill = false;
     public MyPanel() {
         setLayout(null);
         setDoubleBuffered(true);
@@ -61,6 +61,12 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     public static BufferedImage getBufferImage() { return bufferImage; }
     public static void setUndo(boolean b) {
         askundo = b;
+    }
+    public static void setFill(boolean b) {
+        askfill = b;
+    }
+    public static boolean getFill() {
+        return  askfill;
     }
 
     public void printCoords() {

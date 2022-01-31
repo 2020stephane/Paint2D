@@ -32,6 +32,7 @@ public class ToolBar implements ActionListener {
     private JButton btnOpen;
     private final JDialog colorDialog;
     private final JColorChooser colorChooser;
+    private JButton btnfill;
     private JComboBox<String> cbTools;
     private JComboBox<String> cbStrokeWidth;
     private final JToolBar toolBar;
@@ -58,6 +59,8 @@ public class ToolBar implements ActionListener {
         toolBar.add(redoImage());
         toolBar.add(createSeparator());
         toolBar.add(colors());
+        toolBar.add(createSeparator());
+        toolBar.add(fill());
         toolBar.add(createSeparator());
         toolBar.add(cbTools());
         toolBar.add(createSeparator());
@@ -93,6 +96,7 @@ public class ToolBar implements ActionListener {
         btnNew.setIcon(new ImageIcon(Objects.requireNonNull(getClass()
                 .getResource("../icon/newFile.png"))));
         btnNew.addActionListener(this);
+        btnNew.setToolTipText("nouveau fichier");
         return btnNew;
     }
 
@@ -101,6 +105,7 @@ public class ToolBar implements ActionListener {
         btnOpen.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
                 "../icon/openFile.png"))));
         btnOpen.addActionListener(this);
+        btnOpen.setToolTipText("ouvrir un fichier");
         return btnOpen;
     }
 
@@ -109,6 +114,7 @@ public class ToolBar implements ActionListener {
         btnSave.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
                 "../icon/save.png"))));
         btnSave.addActionListener(this);
+        btnSave.setToolTipText("sauvegarder le fichier");
         return btnSave;
     }
 
@@ -152,6 +158,13 @@ public class ToolBar implements ActionListener {
         btnColor.addActionListener(this);
         return btnColor;
     }
+    private JButton fill() {
+        btnfill = new JButton();
+        btnfill.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(
+                "../icon/fill.png"))));
+        btnfill.addActionListener(this);
+        return btnfill;
+    }
 
     private JToolBar.Separator createSeparator() {
 
@@ -176,6 +189,8 @@ public class ToolBar implements ActionListener {
             Main.getMypanel().clearBufferImage();
         } else if ( event == btnOpen) {
             actionOpen(e);
+        } else if ( event == btnfill) {
+            actionFill();
         }
     }
 
@@ -238,5 +253,11 @@ public class ToolBar implements ActionListener {
         MyPanel.setUndo(true);
     }
     private void actionRedo(ActionEvent e) { }
+    private void actionFill() {
+        if (MyPanel.getFill()) {
+           MyPanel.setFill(false);
+        } else MyPanel.setFill(true);
+
+    }
 
 }
