@@ -26,6 +26,9 @@ import java.util.Objects;
 
 import static com.stephane.tools.Shape.*;
 
+/**
+ * le conteneur principal
+ */
 public class  MyPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 
