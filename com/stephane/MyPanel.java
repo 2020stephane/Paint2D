@@ -45,7 +45,9 @@ public class  MyPanel extends JPanel implements MouseListener, MouseMotionListen
     private static boolean askfill = false;
 
 
-
+    /**
+     * constructeur
+     */
     public MyPanel() {
         setLayout(null);
         setDoubleBuffered(true);
